@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using CorePulse.API.Data;
 using CorePulse.API.Models.Domains;
 using CorePulse.API.Models.DTOs;
+using CorePulse.API.Repositories.Interface;
 
 namespace CorePulse.API.Controllers
 {
@@ -16,10 +17,11 @@ namespace CorePulse.API.Controllers
     public class CategoriesController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly ICategoryRepository _categoryRepository;
 
-        public CategoriesController(ApplicationDbContext context)
+        public CategoriesController(ICategoryRepository categoryRepository)
         {
-            _context = context;
+            _categoryRepository = categoryRepository;
         }
 
         // GET: api/Categories
@@ -85,10 +87,10 @@ namespace CorePulse.API.Controllers
                 UrlHandle = categoryDto.UrlHandle,
                 // Id = Guid.NewGuid()
                 // Id is omitted because EF will handle it
-            };  
+            };
 
-            _context.Categories.Add(category);
-            await _context.SaveChangesAsync();
+            // Create category
+            _categoryRepository.CreateCategoriesAsync(category);
 
             return Ok(category);
             //return CreatedAtAction("GetCategory", new { id = category.Id }, category);
