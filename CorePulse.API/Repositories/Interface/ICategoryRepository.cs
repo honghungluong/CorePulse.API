@@ -5,5 +5,6 @@ namespace CorePulse.API.Repositories.Interface
     public interface ICategoryRepository
     {
         Task<Category> CreateCategoriesAsync(Category category);    
+        Task<List<Category>> GetAllCategoriesAsync();   
     }
 }

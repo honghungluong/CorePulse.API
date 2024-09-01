@@ -19,5 +19,10 @@ namespace CorePulse.API.Repositories.Implementation
             await _dbContext.SaveChangesAsync();
             return category;
         }
+
+        public async Task<List<Category>> GetAllCategoriesAsync()
+        {
+            return await _dbContext.Categories.ToListAsync();
+        }
     }
 }

@@ -29,7 +29,16 @@ namespace CorePulse.API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
         {
-            return await _context.Categories.ToListAsync();
+            var categories = await _categoryRepository.GetAllCategoriesAsync();
+
+            // map domain model to DTO
+            var reponses = new List<CategoryDto>();   
+            foreach (var category in categories)
+            {
+                reponses.Add(new CategoryDto { Id = category.Id, Name = category.Name, UrlHandle = category.UrlHandle });   
+            }
+                
+            return Ok(reponses);
         }
 
         // GET: api/Categories/5
