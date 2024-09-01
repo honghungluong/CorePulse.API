@@ -19,8 +19,9 @@ namespace CorePulse.API.Controllers
         private readonly ApplicationDbContext _context;
         private readonly ICategoryRepository _categoryRepository;
 
-        public CategoriesController(ICategoryRepository categoryRepository)
+        public CategoriesController(ApplicationDbContext context, ICategoryRepository categoryRepository)
         {
+            _context = context;
             _categoryRepository = categoryRepository;
         }
 
