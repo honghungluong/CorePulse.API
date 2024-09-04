@@ -32,7 +32,7 @@ namespace CorePulse.API.Controllers
             var categories = await _categoryRepository.GetAllCategoriesAsync();
 
             // map domain model to DTO
-            var reponses = new List<CategoryDto>();   
+            var reponses = new List<CategoryDto>();     
             foreach (var category in categories)
             {
                 reponses.Add(new CategoryDto { Id = category.Id, Name = category.Name, UrlHandle = category.UrlHandle });   
@@ -94,15 +94,22 @@ namespace CorePulse.API.Controllers
             Category category = new Category
             {
                 Name = categoryDto.Name,
-                UrlHandle = categoryDto.UrlHandle,
+                UrlHandle = categoryDto.UrlHandle
                 // Id = Guid.NewGuid()
                 // Id is omitted because EF will handle it
             };
 
             // Create category
-            _categoryRepository.CreateCategoriesAsync(category);
+            await _categoryRepository.CreateCategoriesAsync(category);
 
-            return Ok(category);
+            var response = new CategoryDto()
+            {
+                Id = category.Id,
+                Name = category.Name,
+                UrlHandle = category.UrlHandle
+            };
+
+            return Ok(response);
             //return CreatedAtAction("GetCategory", new { id = category.Id }, category);
         }
 
