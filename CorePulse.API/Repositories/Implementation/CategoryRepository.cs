@@ -20,9 +20,26 @@ namespace CorePulse.API.Repositories.Implementation
             return category;
         }
 
+        public async Task<Category> DeleteCategoryByIdAsync(Guid categoryId)
+        {
+            var category = await _dbContext.Categories.FindAsync(categoryId);
+            if (category == null)
+                return null;
+
+            _dbContext.Categories.Remove(category);
+            await _dbContext.SaveChangesAsync();    
+            return category;
+        }
+
         public async Task<List<Category>> GetAllCategoriesAsync()
         {
             return await _dbContext.Categories.ToListAsync();
+        }
+
+        public async Task<Category> GetCategoryByIdAsync(Guid id)    
+        {
+            var category = await _dbContext.Categories.FindAsync(id);
+            return category;
         }
     }
 }

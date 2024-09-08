@@ -45,14 +45,22 @@ namespace CorePulse.API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Category>> GetCategory(Guid id)
         {
-            var category = await _context.Categories.FindAsync(id);
+            var category = await _categoryRepository.GetCategoryByIdAsync(id);
 
             if (category == null)
             {
                 return NotFound();
             }
 
-            return category;
+            // map Domain model to DTO
+            var response = new CategoryDto()
+            {
+                Id = category.Id,
+                Name = category.Name,
+                UrlHandle = category.UrlHandle
+            };
+
+            return Ok(response);
         }
 
         // PUT: api/Categories/5
@@ -117,14 +125,14 @@ namespace CorePulse.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCategory(Guid id)
         {
-            var category = await _context.Categories.FindAsync(id);
-            if (category == null)
+            var result = await _categoryRepository.DeleteCategoryByIdAsync(id);
+
+            var isDeleteSuccess = result != null;
+
+            if (!isDeleteSuccess)
             {
                 return NotFound();
             }
-
-            _context.Categories.Remove(category);
-            await _context.SaveChangesAsync();
 
             return NoContent();
         }

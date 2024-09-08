@@ -6,5 +6,7 @@ namespace CorePulse.API.Repositories.Interface
     {
         Task<Category> CreateCategoriesAsync(Category category);    
         Task<List<Category>> GetAllCategoriesAsync();   
+        Task<Category> GetCategoryByIdAsync(Guid categoryId);
+        Task<Category> DeleteCategoryByIdAsync(Guid categoryId);
     }
 }
